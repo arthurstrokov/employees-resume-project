@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: employees-resume-project
+  profiles:
+    active: dev
+  config:
+    import: 'optional:configserver:'
+#  cloud:
+#    config:
+#      enabled: false
+#      failFast: false
+#      uri: http://localhost:8888/ only for local using
+#      uri: https://spring-boot-cloud-config.herokuapp.com      
