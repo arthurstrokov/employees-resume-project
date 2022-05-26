@@ -46,11 +46,22 @@ public class EmployeeController {
     }
 
     /**
+     * Find employee by id
+     *
+     * @param email employee email
+     * @return Employee found by email
+     */
+    @GetMapping
+    Employee getByEmployeeEmail(@RequestParam("email") String email) {
+        return service.findByEmail(email);
+    }
+
+    /**
      * Get all employees
      *
      * @return employees list
      */
-    @GetMapping
+    @GetMapping("/all")
     public List<EmployeeDTO> getAllEmployees() {
         return service.getAllEmployees();
     }
@@ -58,10 +69,10 @@ public class EmployeeController {
     /**
      * Get pageable list of employees
      *
-     * @param pageable etc. http://localhost:8080/employeesListPageable?page=0&size=3&sort=name
+     * @param pageable etc. http://localhost:8080/pageable?page=0&size=3&sort=name
      * @return Sorted pageable list of employees
      */
-    @GetMapping(value = "/employeesListPageable")
+    @GetMapping(value = "/pageable")
     ResponseEntity<Page<EmployeeDTO>> employeesPageable(Pageable pageable) {
         try {
             Page<EmployeeDTO> employeesPageable = service.getEmployeesPageable(pageable);

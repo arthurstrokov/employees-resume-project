@@ -15,6 +15,8 @@ public interface EmployeeService {
 
     EmployeeDTO findById(Long id);
 
+    Employee findByEmail(String email);
+
     List<EmployeeDTO> getAllEmployees();
 
     Page<EmployeeDTO> getEmployeesPageable(Pageable pageable);
