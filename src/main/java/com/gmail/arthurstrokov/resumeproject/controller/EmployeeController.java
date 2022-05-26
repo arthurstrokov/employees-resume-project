@@ -2,6 +2,7 @@ package com.gmail.arthurstrokov.resumeproject.controller;
 
 import com.gmail.arthurstrokov.resumeproject.dto.EmployeeDTO;
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
+import com.gmail.arthurstrokov.resumeproject.exceptions.PageNotFoundException;
 import com.gmail.arthurstrokov.resumeproject.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -68,8 +69,9 @@ public class EmployeeController {
 
     /**
      * Get pageable list of employees
+     * localhost:8080/employees/pageable?page=0&size=0&sort=fieldName
      *
-     * @param pageable etc. http://localhost:8080/pageable?page=0&size=3&sort=name
+     * @param pageable pageable
      * @return Sorted pageable list of employees
      */
     @GetMapping(value = "/pageable")
@@ -78,7 +80,8 @@ public class EmployeeController {
             Page<EmployeeDTO> employeesPageable = service.getEmployeesPageable(pageable);
             return new ResponseEntity<>(employeesPageable, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); //  or throw new PageNotFoundException();
+            throw new PageNotFoundException();
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 

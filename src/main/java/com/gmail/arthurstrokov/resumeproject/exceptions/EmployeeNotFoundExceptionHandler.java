@@ -17,7 +17,7 @@ public class EmployeeNotFoundExceptionHandler {
                 .body(Collections.singletonMap(ERROR_MESSAGE, e.getMessage()));
     }
 
-    @ExceptionHandler({EmployeeNotFoundException.class})
+    @ExceptionHandler({EmployeeNotFoundException.class, EmployeeAlreadyExistsException.class})
     public ResponseEntity<?> handleUserNotFound(Exception exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap(ERROR_MESSAGE, exception.getMessage()));
     }
