@@ -11,6 +11,8 @@ import java.util.List;
 @Service
 public interface EmployeeService {
 
+    boolean ifExists(String value);
+
     Employee save(EmployeeDTO employeeDTO);
 
     EmployeeDTO findById(Long id);

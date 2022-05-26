@@ -2,6 +2,7 @@ package com.gmail.arthurstrokov.resumeproject.service;
 
 import com.gmail.arthurstrokov.resumeproject.dto.EmployeeDTO;
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
+import com.gmail.arthurstrokov.resumeproject.exceptions.EmployeeAlreadyExistsException;
 import com.gmail.arthurstrokov.resumeproject.exceptions.EmployeeNotFoundException;
 import com.gmail.arthurstrokov.resumeproject.mapper.EmployeeMapper;
 import com.gmail.arthurstrokov.resumeproject.repository.EmployeeRepository;
@@ -23,6 +24,11 @@ import java.util.stream.Collectors;
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository repository;
 
+    @Override
+    public boolean ifExists(String value) {
+        return repository.existsByEmail(value);
+    }
+
     /**
      * Create new employee method
      *
@@ -31,7 +37,12 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public Employee save(EmployeeDTO employeeDTO) {
-        return repository.save(EmployeeMapper.INSTANCE.toEntity(employeeDTO));
+        Employee employee = EmployeeMapper.INSTANCE.toEntity(employeeDTO);
+        if (ifExists(employee.getEmail())) {
+            throw new EmployeeAlreadyExistsException(employee.getEmail());
+        } else {
+            return repository.save(employee);
+        }
     }
 
     /**
@@ -46,6 +57,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .map(EmployeeMapper.INSTANCE::toDTO)
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
     }
+
     /**
      * Find employee by email
      *
