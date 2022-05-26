@@ -2,7 +2,6 @@ package com.gmail.arthurstrokov.resumeproject.controller;
 
 import com.gmail.arthurstrokov.resumeproject.dto.EmployeeDTO;
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
-import com.gmail.arthurstrokov.resumeproject.mapper.EmployeeMapper;
 import com.gmail.arthurstrokov.resumeproject.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,22 +14,21 @@ public class EmployeeController {
 
     @PostMapping
     public Employee save(@RequestBody EmployeeDTO employeeDTO) {
-        return service.save(EmployeeMapper.INSTANCE.toEntity(employeeDTO));
+        return service.save(employeeDTO);
     }
 
     @GetMapping("{id}")
-    public Employee getByEmployeeId(@PathVariable("id") Long id) {
+    public EmployeeDTO getByEmployeeId(@PathVariable("id") String id) {
         return service.findById(id);
     }
 
     @PutMapping("{id}")
     public Employee updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        Employee employee = EmployeeMapper.INSTANCE.toEntity(employeeDTO);
-        return service.update(employee);
+        return service.update(employeeDTO);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<?> delete(@PathVariable("id") String id) {
         service.deleteById(id);
         return ResponseEntity.noContent().build();
     }

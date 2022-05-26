@@ -1,16 +1,17 @@
 package com.gmail.arthurstrokov.resumeproject.service;
 
+import com.gmail.arthurstrokov.resumeproject.dto.EmployeeDTO;
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface EmployeeService {
 
-    Employee save(Employee employee);
+    Employee save(EmployeeDTO employeeDTO);
 
-    Employee findById(Long id);
+    EmployeeDTO findById(String id);
 
-    Employee update(Employee employee);
+    Employee update(EmployeeDTO employeeDTO);
 
-    void deleteById(Long id);
+    void deleteById(String id);
 }
