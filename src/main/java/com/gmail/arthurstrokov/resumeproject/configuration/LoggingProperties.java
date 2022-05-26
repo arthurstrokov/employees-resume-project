@@ -1,6 +1,8 @@
 package com.gmail.arthurstrokov.resumeproject.configuration;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
+@ConfigurationProperties("logging.method.exec")
 public class LoggingProperties {
     private String loggerName = "AuditLogger";
 

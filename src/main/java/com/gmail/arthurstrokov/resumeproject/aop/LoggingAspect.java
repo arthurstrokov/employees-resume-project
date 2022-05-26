@@ -1,32 +1,42 @@
 package com.gmail.arthurstrokov.resumeproject.aop;
 
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 @Aspect
 public class LoggingAspect {
-    private final Logger log;
+    private Logger log;
 
     public LoggingAspect(String loggerName) {
         super();
         log = LoggerFactory.getLogger(loggerName);
     }
 
-    @Pointcut("within(com.gmail.arthurstrokov.resumeproject.service..*)")
+    @Pointcut("execution(* com.gmail.arthurstrokov.resumeproject.service.EmployeeService.*(..)) ||" +
+            "execution(* com.gmail.arthurstrokov.resumeproject.controller.EmployeeController.*(..))")
     public void executeLogging() {
     }
 
+    @Before("executeLogging()")
+    public void beforeAdvice(JoinPoint joinPoint) {
+        log = LoggerFactory.getLogger(joinPoint.getSignature().getDeclaringTypeName());
+        log.info("Before method: {}", joinPoint.getSignature());
+        log.info("Args: {}", joinPoint.getArgs());
+    }
 
-    @Around("executeLogging()")
-    public Object executeLogging(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        log.info("Hey");
-        Object value = proceedingJoinPoint.proceed();
-        log.info("dude");
-        return value;
+    @AfterReturning(pointcut = "executeLogging()", returning = "result")
+    public void logAfterReturning(JoinPoint joinPoint, Object result) {
+        log = LoggerFactory.getLogger(joinPoint.getSignature().getDeclaringTypeName());
+        log.info("After method: {}", joinPoint.getSignature());
+        if (result != null) {
+            log.info("return value : {}", result);
+        } else {
+            log.info("with null as return value.");
+        }
     }
 }
