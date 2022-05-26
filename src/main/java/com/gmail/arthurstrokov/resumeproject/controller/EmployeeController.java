@@ -7,8 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
-@RestController("/employees")
+@RestController
+@RequestMapping("/employees")
 public class EmployeeController {
     private final EmployeeService service;
 
@@ -18,7 +21,7 @@ public class EmployeeController {
     }
 
     @GetMapping("{id}")
-    public EmployeeDTO getByEmployeeId(@PathVariable("id") String id) {
+    public EmployeeDTO findById(@PathVariable("id") Long id) {
         return service.findById(id);
     }
 
@@ -28,8 +31,13 @@ public class EmployeeController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") String id) {
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         service.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public List<EmployeeDTO> getAllEmployees(){
+        return service.getAllEmployees();
     }
 }

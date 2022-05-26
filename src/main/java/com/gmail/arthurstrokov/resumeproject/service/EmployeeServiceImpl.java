@@ -8,6 +8,9 @@ import com.gmail.arthurstrokov.resumeproject.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -19,7 +22,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDTO findById(String id) {
+    public EmployeeDTO findById(Long id) {
         return repository.findById(id)
                 .map(EmployeeMapper.INSTANCE::toDTO)
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
@@ -31,7 +34,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public List<EmployeeDTO> getAllEmployees() {
+        List<Employee> employees = repository.findAll();
+        return employees.stream().map(EmployeeMapper.INSTANCE::toDTO).collect(Collectors.toList());
     }
 }
