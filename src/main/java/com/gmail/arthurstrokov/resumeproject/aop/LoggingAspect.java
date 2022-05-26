@@ -18,7 +18,9 @@ public class LoggingAspect {
     }
 
     @Pointcut("execution(* com.gmail.arthurstrokov.resumeproject.service.EmployeeService.*(..)) ||" +
-            "execution(* com.gmail.arthurstrokov.resumeproject.controller.EmployeeController.*(..))")
+            "execution(* com.gmail.arthurstrokov.resumeproject.controller.EmployeeController.*(..)) ||" +
+            "execution(* com.gmail.arthurstrokov.resumeproject.repository.EmployeeRepository.*(..))"
+    )
     public void executeLogging() {
     }
 
