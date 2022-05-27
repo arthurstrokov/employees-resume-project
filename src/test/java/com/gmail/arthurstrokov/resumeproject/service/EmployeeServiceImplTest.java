@@ -2,6 +2,7 @@ package com.gmail.arthurstrokov.resumeproject.service;
 
 import com.gmail.arthurstrokov.resumeproject.dto.EmployeeDTO;
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
+import com.gmail.arthurstrokov.resumeproject.exceptions.EmployeeAlreadyExistsException;
 import com.gmail.arthurstrokov.resumeproject.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,6 +77,7 @@ class EmployeeServiceImplTest {
         when(employeeRepository.save(any(Employee.class))).thenReturn(employee);
         employeeService.save(employeeDTO);
         verify(employeeRepository, times(1)).save(any());
+        assertDoesNotThrow(() -> employeeService.save(employeeDTO));
     }
 
     @Test
