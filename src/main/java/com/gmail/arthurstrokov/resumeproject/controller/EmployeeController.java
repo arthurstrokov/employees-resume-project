@@ -35,9 +35,9 @@ public class EmployeeController {
      */
     @PostMapping
     public ResponseEntity<EmployeeDTO> save(@RequestBody EmployeeDTO employeeDTO) {
-        Employee employee = service.save(employeeDTO);
-        EmployeeDTO savedEmployee = mapper.toDTO(employee);
-        return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
+        Employee employee = mapper.toEntity(employeeDTO);
+        Employee savedEmployee = service.save(employee);
+        return new ResponseEntity<>(mapper.toDTO(savedEmployee), HttpStatus.CREATED);
     }
 
     /**
@@ -73,8 +73,10 @@ public class EmployeeController {
      */
     @GetMapping("/all")
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
-        List<Employee> employees = service.getAllEmployees();
-        List<EmployeeDTO> employeeDTOList = employees.stream().map(mapper::toDTO).collect(Collectors.toList());
+        List<EmployeeDTO> employeeDTOList = service.getAllEmployees()
+                .stream()
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
         return new ResponseEntity<>(employeeDTOList, HttpStatus.OK);
     }
 
@@ -105,8 +107,9 @@ public class EmployeeController {
      * @return employee
      */
     @PutMapping("{id}")
-    public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employeeDTO, @PathVariable Long id) {
-        Employee employee = service.update(employeeDTO, id);
+    public ResponseEntity<EmployeeDTO> update(@RequestBody EmployeeDTO employeeDTO, @PathVariable Long id) {
+        Employee newEmployee = mapper.toEntity(employeeDTO);
+        Employee employee = service.update(newEmployee, id);
         EmployeeDTO updatedEmployee = mapper.toDTO(employee);
         return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
     }

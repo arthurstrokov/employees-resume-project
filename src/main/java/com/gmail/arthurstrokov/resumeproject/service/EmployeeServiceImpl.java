@@ -32,12 +32,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * Create new employee method
      *
-     * @param employeeDTO Employee
+     * @param employee Employee
      * @return employee
      */
     @Override
-    public Employee save(EmployeeDTO employeeDTO) {
-        Employee employee = EmployeeMapper.INSTANCE.toEntity(employeeDTO);
+    public Employee save(Employee employee) {
         if (ifExists(employee.getEmail())) {
             throw new EmployeeAlreadyExistsException(employee.getEmail());
         } else {
@@ -91,18 +90,21 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * Update employee
      *
-     * @param employeeDTO EmployeeDTO
+     * @param newEmployee EmployeeDTO
      * @param id          employee id
      * @return employee
      */
     @Override
-    public Employee update(EmployeeDTO employeeDTO, Long id) {
+    public Employee update(Employee newEmployee, Long id) {
         return repository.findById(id).map(employee -> {
-            EmployeeMapper.INSTANCE.toEntity(employeeDTO);
+            employee.setFirstName(newEmployee.getFirstName());
+            employee.setLastName(newEmployee.getLastName());
+            employee.setPhone(newEmployee.getPhone());
+            employee.setEmail(newEmployee.getEmail());
             return repository.save(employee);
         }).orElseGet(() -> {
-            employeeDTO.setId(id);
-            return repository.save(EmployeeMapper.INSTANCE.toEntity(employeeDTO));
+            newEmployee.setId(id);
+            return repository.save(newEmployee);
         });
     }
 
