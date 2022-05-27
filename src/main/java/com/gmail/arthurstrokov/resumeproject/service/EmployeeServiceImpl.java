@@ -25,9 +25,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository repository;
     private final EmployeeMapper mapper;
 
+    /**
+     * Check if email already exist
+     *
+     * @param email email
+     * @return boolean
+     */
     @Override
-    public boolean ifExists(String value) {
-        return repository.existsByEmail(value);
+    public boolean ifExists(String email) {
+        return repository.existsByEmail(email);
     }
 
     /**

@@ -6,7 +6,11 @@ package com.gmail.arthurstrokov.resumeproject.exceptions;
  * @author Arthur Strokov
  */
 public class EmployeeAlreadyExistsException extends RuntimeException {
-
+    /**
+     * EmployeeAlreadyExistsException
+     *
+     * @param email email
+     */
     public EmployeeAlreadyExistsException(String email) {
         super("Employee with " + email + " email already exists");
     }
