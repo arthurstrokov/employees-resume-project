@@ -17,7 +17,7 @@ public interface EmployeeService {
 
     EmployeeDTO findById(Long id);
 
-    Employee findByEmail(String email);
+    EmployeeDTO findByEmail(String email);
 
     List<EmployeeDTO> getAllEmployees();
 

@@ -53,7 +53,7 @@ public class EmployeeController {
      * @return Employee found by email
      */
     @GetMapping
-    Employee findByEmail(@RequestParam("email") String email) {
+    EmployeeDTO findByEmail(@RequestParam("email") String email) {
         return service.findByEmail(email);
     }
 

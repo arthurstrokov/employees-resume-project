@@ -65,8 +65,10 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return employee
      */
     @Override
-    public Employee findByEmail(String email) {
-        return repository.findByEmail(email).orElseThrow(() -> new EmployeeNotFoundException(email));
+    public EmployeeDTO findByEmail(String email) {
+        return repository.findByEmail(email)
+                .map(EmployeeMapper.INSTANCE::toDTO)
+                .orElseThrow(() -> new EmployeeNotFoundException(email));
     }
 
     /**
