@@ -59,8 +59,8 @@ public class EmployeeController {
      * @param email employee email
      * @return Employee found by email
      */
-    @GetMapping
-    ResponseEntity<EmployeeDTO> findByEmail(@RequestParam("email") String email) {
+    @GetMapping("{email}")
+    ResponseEntity<EmployeeDTO> findByEmail(@PathVariable("email") String email) {
         Employee employee = service.findByEmail(email);
         EmployeeDTO employeeDTO = mapper.toDTO(employee);
         return new ResponseEntity<>(employeeDTO, HttpStatus.OK);
@@ -71,7 +71,7 @@ public class EmployeeController {
      *
      * @return employees list
      */
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
         List<EmployeeDTO> employeeDTOList = service.getAllEmployees()
                 .stream()
