@@ -7,6 +7,7 @@ import com.gmail.arthurstrokov.resumeproject.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -68,7 +69,7 @@ public class EmployeeController {
      * @return Sorted pageable list of employees
      */
     @GetMapping(value = "/pageable")
-    ResponseEntity<Page<EmployeeDTO>> employeesPageable(Pageable pageable) {
+    ResponseEntity<Page<EmployeeDTO>> employeesPageable(@PageableDefault(value = 1, page = 1) Pageable pageable) {
         try {
             Page<EmployeeDTO> employeesPageable = service.getEmployeesPageable(pageable);
             return new ResponseEntity<>(employeesPageable, HttpStatus.OK);
