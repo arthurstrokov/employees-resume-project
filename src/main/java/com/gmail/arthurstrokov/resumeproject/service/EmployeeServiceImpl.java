@@ -53,17 +53,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     /**
-     * Find employee by email
-     *
-     * @param email employee id
-     * @return employee
-     */
-    @Override
-    public Employee findByEmail(String email) {
-        return repository.findByEmail(email).orElseThrow(() -> new EmployeeNotFoundException(email));
-    }
-
-    /**
      * Get all employees
      *
      * @return employees list
@@ -93,12 +82,16 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public Employee update(Employee newEmployee, Long id) {
-        Employee employee = repository.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
-        employee.setFirstName(newEmployee.getFirstName());
-        employee.setLastName(newEmployee.getLastName());
-        employee.setPhone(newEmployee.getPhone());
-        employee.setEmail(newEmployee.getEmail());
-        return repository.save(employee);
+        return repository.findById(id).map(employee -> {
+            employee.setFirstName(newEmployee.getFirstName());
+            employee.setLastName(newEmployee.getLastName());
+            employee.setPhone(newEmployee.getPhone());
+            employee.setEmail(newEmployee.getEmail());
+            return repository.save(employee);
+        }).orElseGet(() -> {
+            newEmployee.setId(id);
+            return repository.save(newEmployee);
+        });
     }
 
     /**

@@ -54,19 +54,6 @@ public class EmployeeController {
     }
 
     /**
-     * Find employee by id
-     *
-     * @param email employee email
-     * @return Employee found by email
-     */
-    @GetMapping("{email}")
-    ResponseEntity<EmployeeDTO> findByEmail(@PathVariable("email") String email) {
-        Employee employee = service.findByEmail(email);
-        EmployeeDTO employeeDTO = mapper.toDTO(employee);
-        return new ResponseEntity<>(employeeDTO, HttpStatus.OK);
-    }
-
-    /**
      * Get all employees
      *
      * @return employees list
