@@ -1,10 +1,7 @@
 package com.gmail.arthurstrokov.resumeproject.aop;
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +21,7 @@ public class LoggingAspect {
     }
 
     /**
+     * Create pointcut
      * Describe witch packages should be logged.
      */
     @Pointcut("execution(* com.gmail.arthurstrokov.resumeproject.service.EmployeeService.*(..)) ||" +
@@ -34,24 +32,48 @@ public class LoggingAspect {
     }
 
     /**
+     * Log exceptions
+     * Works when an exception is thrown
+     *
+     * @param joinPoint joinPoint
+     * @param exception Throwable
+     * @see JoinPoint
+     * @see Throwable
+     */
+    @AfterThrowing(pointcut = "executeLogging()", throwing = "exception")
+    public void afterThrowing(JoinPoint joinPoint, Throwable exception) {
+        log.error("Exception in '{}' Method: '{}' Message: '{}'",
+                joinPoint.getSignature().getDeclaringTypeName(),
+                joinPoint.getSignature().getName(), exception.getMessage());
+    }
+
+    /**
      * Log incoming args
+     * Works before calling methods
+     *
+     * @param joinPoint joinPoint
      */
     @Before("executeLogging()")
     public void beforeAdvice(JoinPoint joinPoint) {
         log = LoggerFactory.getLogger(joinPoint.getSignature().getDeclaringTypeName());
-        log.info("Before method: {}", joinPoint.getSignature());
-        log.info("Args: {}", joinPoint.getArgs());
+        log.info("Before method: '{}' Args: '{}'",
+                joinPoint.getSignature(),
+                joinPoint.getArgs());
     }
 
     /**
      * Log returning values
+     * Works after calling methods
+     *
+     * @param joinPoint joinPoint
+     * @param result    result
      */
     @AfterReturning(pointcut = "executeLogging()", returning = "result")
-    public void logAfterReturning(JoinPoint joinPoint, Object result) {
+    public void afterReturning(JoinPoint joinPoint, Object result) {
         log = LoggerFactory.getLogger(joinPoint.getSignature().getDeclaringTypeName());
-        log.info("After method: {}", joinPoint.getSignature());
+        log.info("After method: '{}'", joinPoint.getSignature());
         if (result != null) {
-            log.info("return value : {}", result);
+            log.info("return value : '{}'", result);
         } else {
             log.info("with null as return value.");
         }
