@@ -1,5 +1,6 @@
 package com.gmail.arthurstrokov.resumeproject.service;
 
+import com.gmail.arthurstrokov.resumeproject.dto.EmployeeDTO;
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,15 +13,15 @@ public interface EmployeeService {
 
     boolean ifExists(String value);
 
-    Employee save(Employee employee);
+    Employee save(EmployeeDTO employeeDTO);
 
-    Employee findById(Long id);
+    EmployeeDTO findById(Long id);
 
-    List<Employee> getAllEmployees();
+    List<EmployeeDTO> getAllEmployees();
 
-    Page<Employee> getEmployeesPageable(Pageable pageable);
+    Page<EmployeeDTO> getEmployeesPageable(Pageable pageable);
 
-    Employee update(Employee employee, Long id);
+    Employee update(EmployeeDTO employee, Long id);
 
     void deleteById(Long id);
 }

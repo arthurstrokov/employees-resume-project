@@ -1,8 +1,10 @@
 package com.gmail.arthurstrokov.resumeproject.service;
 
+import com.gmail.arthurstrokov.resumeproject.dto.EmployeeDTO;
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
 import com.gmail.arthurstrokov.resumeproject.exceptions.EmployeeAlreadyExistsException;
 import com.gmail.arthurstrokov.resumeproject.exceptions.EmployeeNotFoundException;
+import com.gmail.arthurstrokov.resumeproject.mapper.EmployeeMapper;
 import com.gmail.arthurstrokov.resumeproject.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Employee service
@@ -20,6 +23,7 @@ import java.util.List;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository repository;
+    private final EmployeeMapper mapper;
 
     @Override
     public boolean ifExists(String value) {
@@ -29,11 +33,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * Create new employee method
      *
-     * @param employee Employee
+     * @param employeeDTO EmployeeDTO
      * @return employee
      */
     @Override
-    public Employee save(Employee employee) {
+    public Employee save(EmployeeDTO employeeDTO) {
+        Employee employee = mapper.toEntity(employeeDTO);
         if (ifExists(employee.getEmail())) {
             throw new EmployeeAlreadyExistsException(employee.getEmail());
         } else {
@@ -48,8 +53,9 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return employee
      */
     @Override
-    public Employee findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
+    public EmployeeDTO findById(Long id) {
+        Employee employee = repository.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
+        return mapper.toDTO(employee);
     }
 
     /**
@@ -58,8 +64,9 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return employees list
      */
     @Override
-    public List<Employee> getAllEmployees() {
-        return repository.findAll();
+    public List<EmployeeDTO> getAllEmployees() {
+        List<Employee> employees = repository.findAll();
+        return employees.stream().map(mapper::toDTO).collect(Collectors.toList());
     }
 
     /**
@@ -69,28 +76,29 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return Sorted pageable list of employees
      */
     @Override
-    public Page<Employee> getEmployeesPageable(Pageable pageable) {
-        return repository.findAll(pageable);
+    public Page<EmployeeDTO> getEmployeesPageable(Pageable pageable) {
+        Page<Employee> employees = repository.findAll(pageable);
+        return employees.map(mapper::toDTO);
     }
 
     /**
      * Update employee
      *
-     * @param newEmployee EmployeeDTO
+     * @param employeeDTO EmployeeDTO
      * @param id          employee id
      * @return employee
      */
     @Override
-    public Employee update(Employee newEmployee, Long id) {
+    public Employee update(EmployeeDTO employeeDTO, Long id) {
         return repository.findById(id).map(employee -> {
-            employee.setFirstName(newEmployee.getFirstName());
-            employee.setLastName(newEmployee.getLastName());
-            employee.setPhone(newEmployee.getPhone());
-            employee.setEmail(newEmployee.getEmail());
+            employee.setFirstName(employeeDTO.getFirstName());
+            employee.setLastName(employeeDTO.getLastName());
+            employee.setPhone(employeeDTO.getPhone());
+            employee.setEmail(employeeDTO.getEmail());
             return repository.save(employee);
         }).orElseGet(() -> {
-            newEmployee.setId(id);
-            return repository.save(newEmployee);
+            employeeDTO.setId(id);
+            return repository.save(mapper.toEntity(employeeDTO));
         });
     }
 

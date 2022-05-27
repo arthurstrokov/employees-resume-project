@@ -2,7 +2,6 @@ package com.gmail.arthurstrokov.resumeproject.controller;
 
 import com.gmail.arthurstrokov.resumeproject.dto.EmployeeDTO;
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
-import com.gmail.arthurstrokov.resumeproject.exceptions.PageNotFoundException;
 import com.gmail.arthurstrokov.resumeproject.mapper.EmployeeMapper;
 import com.gmail.arthurstrokov.resumeproject.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Employee controller
@@ -35,9 +33,8 @@ public class EmployeeController {
      */
     @PostMapping
     public ResponseEntity<EmployeeDTO> save(@RequestBody EmployeeDTO employeeDTO) {
-        Employee employee = mapper.toEntity(employeeDTO);
-        Employee savedEmployee = service.save(employee);
-        return new ResponseEntity<>(mapper.toDTO(savedEmployee), HttpStatus.CREATED);
+        Employee employee = service.save(employeeDTO);
+        return new ResponseEntity<>(mapper.toDTO(employee), HttpStatus.CREATED);
     }
 
     /**
@@ -48,8 +45,7 @@ public class EmployeeController {
      */
     @GetMapping("{id}")
     public ResponseEntity<EmployeeDTO> findById(@PathVariable("id") Long id) {
-        Employee employee = service.findById(id);
-        EmployeeDTO employeeDTO = mapper.toDTO(employee);
+        EmployeeDTO employeeDTO = service.findById(id);
         return new ResponseEntity<>(employeeDTO, HttpStatus.OK);
     }
 
@@ -60,10 +56,7 @@ public class EmployeeController {
      */
     @GetMapping
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
-        List<EmployeeDTO> employeeDTOList = service.getAllEmployees()
-                .stream()
-                .map(mapper::toDTO)
-                .collect(Collectors.toList());
+        List<EmployeeDTO> employeeDTOList = service.getAllEmployees();
         return new ResponseEntity<>(employeeDTOList, HttpStatus.OK);
     }
 
@@ -77,12 +70,10 @@ public class EmployeeController {
     @GetMapping(value = "/pageable")
     ResponseEntity<Page<EmployeeDTO>> employeesPageable(Pageable pageable) {
         try {
-            Page<Employee> employees = service.getEmployeesPageable(pageable);
-            Page<EmployeeDTO> employeesPageable = employees.map(mapper::toDTO);
+            Page<EmployeeDTO> employeesPageable = service.getEmployeesPageable(pageable);
             return new ResponseEntity<>(employeesPageable, HttpStatus.OK);
         } catch (Exception e) {
-            throw new PageNotFoundException();
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -95,10 +86,8 @@ public class EmployeeController {
      */
     @PutMapping("{id}")
     public ResponseEntity<EmployeeDTO> update(@RequestBody EmployeeDTO employeeDTO, @PathVariable Long id) {
-        Employee newEmployee = mapper.toEntity(employeeDTO);
-        Employee employee = service.update(newEmployee, id);
-        EmployeeDTO updatedEmployee = mapper.toDTO(employee);
-        return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
+        Employee employee = service.update(employeeDTO, id);
+        return new ResponseEntity<>(mapper.toDTO(employee), HttpStatus.OK);
     }
 
     /**
