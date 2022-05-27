@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Collections;
 
+/**
+ * Exception handler class
+ *
+ * @author Arthur Strokov
+ */
 @ControllerAdvice
 public class EmployeeNotFoundExceptionHandler {
     private static final String ERROR_MESSAGE = "message";

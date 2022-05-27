@@ -5,6 +5,12 @@ import com.gmail.arthurstrokov.resumeproject.entity.Employee;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * Code generator interface that greatly simplifies
+ * the implementation of mappings between Java bean types
+ *
+ * @author Arthur Strokov
+ */
 @Mapper(componentModel = "spring")
 public interface EmployeeMapper {
 

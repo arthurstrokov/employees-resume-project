@@ -4,6 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO model for presentation
+ *
+ * @author Arthur Strokov
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

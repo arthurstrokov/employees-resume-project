@@ -1,5 +1,10 @@
 package com.gmail.arthurstrokov.resumeproject.exceptions;
 
+/**
+ * Exception class
+ *
+ * @author Arthur Strokov
+ */
 public class EmployeeNotFoundException extends RuntimeException {
 
     public EmployeeNotFoundException(Long id) {

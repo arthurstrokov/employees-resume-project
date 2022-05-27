@@ -7,6 +7,11 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
+/**
+ * Entity model for storing in database
+ *
+ * @author Arthur Strokov
+ */
 @Getter
 @Setter
 @ToString
