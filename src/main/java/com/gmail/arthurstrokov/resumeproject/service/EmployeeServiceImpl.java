@@ -52,10 +52,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return employee
      */
     @Override
-    public EmployeeDTO findById(Long id) {
-        return repository.findById(id)
-                .map(EmployeeMapper.INSTANCE::toDTO)
-                .orElseThrow(() -> new EmployeeNotFoundException(id));
+    public Employee findById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
     /**
@@ -65,10 +63,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return employee
      */
     @Override
-    public EmployeeDTO findByEmail(String email) {
-        return repository.findByEmail(email)
-                .map(EmployeeMapper.INSTANCE::toDTO)
-                .orElseThrow(() -> new EmployeeNotFoundException(email));
+    public Employee findByEmail(String email) {
+        return repository.findByEmail(email).orElseThrow(() -> new EmployeeNotFoundException(email));
     }
 
     /**
@@ -77,9 +73,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return employees list
      */
     @Override
-    public List<EmployeeDTO> getAllEmployees() {
-        List<Employee> employees = repository.findAll();
-        return employees.stream().map(EmployeeMapper.INSTANCE::toDTO).collect(Collectors.toList());
+    public List<Employee> getAllEmployees() {
+        return repository.findAll();
     }
 
     /**
@@ -89,9 +84,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return Sorted pageable list of employees
      */
     @Override
-    public Page<EmployeeDTO> getEmployeesPageable(Pageable pageable) {
-        Page<Employee> employees = repository.findAll(pageable);
-        return employees.map(EmployeeMapper.INSTANCE::toDTO);
+    public Page<Employee> getEmployeesPageable(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     /**

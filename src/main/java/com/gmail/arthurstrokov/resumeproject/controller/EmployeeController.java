@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Employee controller
@@ -24,6 +25,7 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController {
     private final EmployeeService service;
+    private final EmployeeMapper mapper;
 
     /**
      * Create new employee method
@@ -34,7 +36,7 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<EmployeeDTO> save(@RequestBody EmployeeDTO employeeDTO) {
         Employee employee = service.save(employeeDTO);
-        EmployeeDTO savedEmployee = EmployeeMapper.INSTANCE.toDTO(employee);
+        EmployeeDTO savedEmployee = mapper.toDTO(employee);
         return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
     }
 
@@ -46,7 +48,8 @@ public class EmployeeController {
      */
     @GetMapping("{id}")
     public ResponseEntity<EmployeeDTO> findById(@PathVariable("id") Long id) {
-        EmployeeDTO employeeDTO = service.findById(id);
+        Employee employee = service.findById(id);
+        EmployeeDTO employeeDTO = mapper.toDTO(employee);
         return new ResponseEntity<>(employeeDTO, HttpStatus.OK);
     }
 
@@ -58,7 +61,8 @@ public class EmployeeController {
      */
     @GetMapping
     ResponseEntity<EmployeeDTO> findByEmail(@RequestParam("email") String email) {
-        EmployeeDTO employeeDTO = service.findByEmail(email);
+        Employee employee = service.findByEmail(email);
+        EmployeeDTO employeeDTO = mapper.toDTO(employee);
         return new ResponseEntity<>(employeeDTO, HttpStatus.OK);
     }
 
@@ -69,7 +73,8 @@ public class EmployeeController {
      */
     @GetMapping("/all")
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
-        List<EmployeeDTO> employeeDTOList = service.getAllEmployees();
+        List<Employee> employees = service.getAllEmployees();
+        List<EmployeeDTO> employeeDTOList = employees.stream().map(mapper::toDTO).collect(Collectors.toList());
         return new ResponseEntity<>(employeeDTOList, HttpStatus.OK);
     }
 
@@ -83,7 +88,8 @@ public class EmployeeController {
     @GetMapping(value = "/pageable")
     ResponseEntity<Page<EmployeeDTO>> employeesPageable(Pageable pageable) {
         try {
-            Page<EmployeeDTO> employeesPageable = service.getEmployeesPageable(pageable);
+            Page<Employee> employees = service.getEmployeesPageable(pageable);
+            Page<EmployeeDTO> employeesPageable = employees.map(mapper::toDTO);
             return new ResponseEntity<>(employeesPageable, HttpStatus.OK);
         } catch (Exception e) {
             throw new PageNotFoundException();
@@ -101,7 +107,7 @@ public class EmployeeController {
     @PutMapping("{id}")
     public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employeeDTO, @PathVariable Long id) {
         Employee employee = service.update(employeeDTO, id);
-        EmployeeDTO updatedEmployee = EmployeeMapper.INSTANCE.toDTO(employee);
+        EmployeeDTO updatedEmployee = mapper.toDTO(employee);
         return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
     }
 

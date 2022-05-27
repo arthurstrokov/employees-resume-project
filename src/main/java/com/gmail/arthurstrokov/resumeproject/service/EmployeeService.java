@@ -15,13 +15,13 @@ public interface EmployeeService {
 
     Employee save(EmployeeDTO employeeDTO);
 
-    EmployeeDTO findById(Long id);
+    Employee findById(Long id);
 
-    EmployeeDTO findByEmail(String email);
+    Employee findByEmail(String email);
 
-    List<EmployeeDTO> getAllEmployees();
+    List<Employee> getAllEmployees();
 
-    Page<EmployeeDTO> getEmployeesPageable(Pageable pageable);
+    Page<Employee> getEmployeesPageable(Pageable pageable);
 
     Employee update(EmployeeDTO employeeDTO, Long id);
 
