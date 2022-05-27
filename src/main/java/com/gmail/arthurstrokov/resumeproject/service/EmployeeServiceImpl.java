@@ -1,10 +1,8 @@
 package com.gmail.arthurstrokov.resumeproject.service;
 
-import com.gmail.arthurstrokov.resumeproject.dto.EmployeeDTO;
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
 import com.gmail.arthurstrokov.resumeproject.exceptions.EmployeeAlreadyExistsException;
 import com.gmail.arthurstrokov.resumeproject.exceptions.EmployeeNotFoundException;
-import com.gmail.arthurstrokov.resumeproject.mapper.EmployeeMapper;
 import com.gmail.arthurstrokov.resumeproject.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Employee service
@@ -96,16 +93,12 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public Employee update(Employee newEmployee, Long id) {
-        return repository.findById(id).map(employee -> {
-            employee.setFirstName(newEmployee.getFirstName());
-            employee.setLastName(newEmployee.getLastName());
-            employee.setPhone(newEmployee.getPhone());
-            employee.setEmail(newEmployee.getEmail());
-            return repository.save(employee);
-        }).orElseGet(() -> {
-            newEmployee.setId(id);
-            return repository.save(newEmployee);
-        });
+        Employee employee = repository.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
+        employee.setFirstName(newEmployee.getFirstName());
+        employee.setLastName(newEmployee.getLastName());
+        employee.setPhone(newEmployee.getPhone());
+        employee.setEmail(newEmployee.getEmail());
+        return repository.save(employee);
     }
 
     /**
