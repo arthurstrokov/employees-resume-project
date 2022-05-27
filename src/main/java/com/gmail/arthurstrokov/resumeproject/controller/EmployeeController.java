@@ -3,6 +3,7 @@ package com.gmail.arthurstrokov.resumeproject.controller;
 import com.gmail.arthurstrokov.resumeproject.dto.EmployeeDTO;
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
 import com.gmail.arthurstrokov.resumeproject.exceptions.PageNotFoundException;
+import com.gmail.arthurstrokov.resumeproject.mapper.EmployeeMapper;
 import com.gmail.arthurstrokov.resumeproject.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,8 +32,10 @@ public class EmployeeController {
      * @return employee
      */
     @PostMapping
-    public Employee save(@RequestBody EmployeeDTO employeeDTO) {
-        return service.save(employeeDTO);
+    public ResponseEntity<EmployeeDTO> save(@RequestBody EmployeeDTO employeeDTO) {
+        Employee employee = service.save(employeeDTO);
+        EmployeeDTO savedEmployee = EmployeeMapper.INSTANCE.toDTO(employee);
+        return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
     }
 
     /**
@@ -42,8 +45,9 @@ public class EmployeeController {
      * @return employee
      */
     @GetMapping("{id}")
-    public EmployeeDTO findById(@PathVariable("id") Long id) {
-        return service.findById(id);
+    public ResponseEntity<EmployeeDTO> findById(@PathVariable("id") Long id) {
+        EmployeeDTO employeeDTO = service.findById(id);
+        return new ResponseEntity<>(employeeDTO, HttpStatus.OK);
     }
 
     /**
@@ -53,8 +57,9 @@ public class EmployeeController {
      * @return Employee found by email
      */
     @GetMapping
-    EmployeeDTO findByEmail(@RequestParam("email") String email) {
-        return service.findByEmail(email);
+    ResponseEntity<EmployeeDTO> findByEmail(@RequestParam("email") String email) {
+        EmployeeDTO employeeDTO = service.findByEmail(email);
+        return new ResponseEntity<>(employeeDTO, HttpStatus.OK);
     }
 
     /**
@@ -63,8 +68,9 @@ public class EmployeeController {
      * @return employees list
      */
     @GetMapping("/all")
-    public List<EmployeeDTO> getAllEmployees() {
-        return service.getAllEmployees();
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
+        List<EmployeeDTO> employeeDTOList = service.getAllEmployees();
+        return new ResponseEntity<>(employeeDTOList, HttpStatus.OK);
     }
 
     /**
@@ -93,8 +99,10 @@ public class EmployeeController {
      * @return employee
      */
     @PutMapping("{id}")
-    public Employee updateEmployee(@RequestBody EmployeeDTO employeeDTO, @PathVariable Long id) {
-        return service.update(employeeDTO, id);
+    public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employeeDTO, @PathVariable Long id) {
+        Employee employee = service.update(employeeDTO, id);
+        EmployeeDTO updatedEmployee = EmployeeMapper.INSTANCE.toDTO(employee);
+        return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
     }
 
     /**
