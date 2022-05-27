@@ -6,6 +6,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configure Logging aspect creation Bean
+ *
+ * @author Arthur Strokov
+ */
 @Configuration
 @ConditionalOnClass(LoggingAspect.class)
 @EnableConfigurationProperties(LoggingProperties.class)
@@ -17,7 +22,7 @@ public class LoggingAspectAutoConfigure {
     }
 
     @Bean
-    public LoggingAspect loggableAspect(){
+    public LoggingAspect loggableAspect() {
         return new LoggingAspect(properties.getLoggerName());
     }
 }
