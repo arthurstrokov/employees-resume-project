@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
 import java.util.Collections;
 
 /**
@@ -16,17 +17,39 @@ import java.util.Collections;
 public class ExceptionHandlerAdvice {
     private static final String ERROR_MESSAGE = "message";
 
-    @ExceptionHandler({IllegalArgumentException.class})
-    public ResponseEntity<?> handleIllegalArgument(Exception exception) {
+    /**
+     * Exception handler
+     *
+     * @param exception exception
+     * @return Exception message and status code
+     * @see ConstraintViolationException
+     * @see IllegalArgumentException
+     */
+    @ExceptionHandler({ConstraintViolationException.class, IllegalArgumentException.class})
+    public ResponseEntity<?> handleConstraintViolation(Exception exception) {
         return ResponseEntity.internalServerError().body(Collections.singletonMap(ERROR_MESSAGE, exception.getMessage()));
     }
 
-    @ExceptionHandler({EmployeeNotFoundException.class})
+    /**
+     * Exception handler
+     *
+     * @param exception exception
+     * @return Exception message and status code
+     * @see ResourceNotFoundException
+     */
+    @ExceptionHandler({ResourceNotFoundException.class})
     public ResponseEntity<?> handleNotFound(Exception exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap(ERROR_MESSAGE, exception.getMessage()));
     }
 
-    @ExceptionHandler({EmployeeAlreadyExistsException.class})
+    /**
+     * Exception handler
+     *
+     * @param exception exception
+     * @return Exception message and status code
+     * @see ResourceAlreadyExistsException
+     */
+    @ExceptionHandler({ResourceAlreadyExistsException.class})
     public ResponseEntity<?> handleBadRequest(Exception exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap(ERROR_MESSAGE, exception.getMessage()));
     }
