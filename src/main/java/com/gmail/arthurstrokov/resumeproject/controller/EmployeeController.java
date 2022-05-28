@@ -2,6 +2,8 @@ package com.gmail.arthurstrokov.resumeproject.controller;
 
 import com.gmail.arthurstrokov.resumeproject.dto.EmployeeDTO;
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
+import com.gmail.arthurstrokov.resumeproject.exceptions.ResourceAlreadyExistsException;
+import com.gmail.arthurstrokov.resumeproject.exceptions.ResourceNotFoundException;
 import com.gmail.arthurstrokov.resumeproject.mapper.EmployeeMapper;
 import com.gmail.arthurstrokov.resumeproject.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -33,7 +36,7 @@ public class EmployeeController {
      * @return employee
      */
     @PostMapping
-    public ResponseEntity<EmployeeDTO> save(@RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<EmployeeDTO> save(@Valid @RequestBody EmployeeDTO employeeDTO) {
         Employee employee = service.save(employeeDTO);
         return new ResponseEntity<>(mapper.toDTO(employee), HttpStatus.CREATED);
     }
@@ -46,8 +49,12 @@ public class EmployeeController {
      */
     @GetMapping("{id}")
     public ResponseEntity<EmployeeDTO> findById(@PathVariable("id") Long id) {
-        EmployeeDTO employeeDTO = service.findById(id);
-        return new ResponseEntity<>(employeeDTO, HttpStatus.OK);
+        try {
+            EmployeeDTO employeeDTO = service.findById(id);
+            return new ResponseEntity<>(employeeDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException(String.valueOf(e));
+        }
     }
 
     /**
@@ -57,8 +64,12 @@ public class EmployeeController {
      */
     @GetMapping
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
-        List<EmployeeDTO> employeeDTOList = service.getAllEmployees();
-        return new ResponseEntity<>(employeeDTOList, HttpStatus.OK);
+        try {
+            List<EmployeeDTO> employeeDTOList = service.getAllEmployees();
+            return new ResponseEntity<>(employeeDTOList, HttpStatus.OK);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException(String.valueOf(e));
+        }
     }
 
     /**
@@ -74,7 +85,7 @@ public class EmployeeController {
             Page<EmployeeDTO> employeesPageable = service.getEmployeesPageable(pageable);
             return new ResponseEntity<>(employeesPageable, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException(String.valueOf(e));
         }
     }
 
@@ -86,12 +97,12 @@ public class EmployeeController {
      * @return employee
      */
     @PutMapping("{id}")
-    public ResponseEntity<EmployeeDTO> update(@RequestBody EmployeeDTO employeeDTO, @PathVariable("id") Long id) {
+    public ResponseEntity<EmployeeDTO> update(@Valid @RequestBody EmployeeDTO employeeDTO, @PathVariable("id") Long id) {
         try {
             Employee employee = service.update(employeeDTO, id);
             return new ResponseEntity<>(mapper.toDTO(employee), HttpStatus.OK);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(employeeDTO);
+            throw new ResourceAlreadyExistsException(employeeDTO.toString());
         }
     }
 
@@ -106,8 +117,8 @@ public class EmployeeController {
         try {
             service.deleteById(id);
             return ResponseEntity.noContent().build();
-        }catch (Exception e){
-            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            throw new ResourceNotFoundException(id);
         }
     }
 }
