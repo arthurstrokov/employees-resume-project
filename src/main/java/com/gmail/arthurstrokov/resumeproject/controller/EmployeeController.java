@@ -86,9 +86,13 @@ public class EmployeeController {
      * @return employee
      */
     @PutMapping("{id}")
-    public ResponseEntity<EmployeeDTO> update(@RequestBody EmployeeDTO employeeDTO, @PathVariable Long id) {
-        Employee employee = service.update(employeeDTO, id);
-        return new ResponseEntity<>(mapper.toDTO(employee), HttpStatus.OK);
+    public ResponseEntity<EmployeeDTO> update(@RequestBody EmployeeDTO employeeDTO, @PathVariable("id") Long id) {
+        try {
+            Employee employee = service.update(employeeDTO, id);
+            return new ResponseEntity<>(mapper.toDTO(employee), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(employeeDTO);
+        }
     }
 
     /**
@@ -99,7 +103,11 @@ public class EmployeeController {
      */
     @DeleteMapping("{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        service.deleteById(id);
-        return ResponseEntity.noContent().build();
+        try {
+            service.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
