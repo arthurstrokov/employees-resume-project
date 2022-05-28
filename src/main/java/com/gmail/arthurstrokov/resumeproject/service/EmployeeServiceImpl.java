@@ -2,8 +2,8 @@ package com.gmail.arthurstrokov.resumeproject.service;
 
 import com.gmail.arthurstrokov.resumeproject.dto.EmployeeDTO;
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
-import com.gmail.arthurstrokov.resumeproject.exceptions.EmployeeAlreadyExistsException;
-import com.gmail.arthurstrokov.resumeproject.exceptions.EmployeeNotFoundException;
+import com.gmail.arthurstrokov.resumeproject.exceptions.ResourceAlreadyExistsException;
+import com.gmail.arthurstrokov.resumeproject.exceptions.ResourceNotFoundException;
 import com.gmail.arthurstrokov.resumeproject.mapper.EmployeeMapper;
 import com.gmail.arthurstrokov.resumeproject.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +46,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee save(EmployeeDTO employeeDTO) {
         Employee employee = mapper.toEntity(employeeDTO);
         if (ifExists(employee.getEmail())) {
-            throw new EmployeeAlreadyExistsException(employee.getEmail());
+            throw new ResourceAlreadyExistsException(employee.getEmail());
         } else {
             return repository.save(employee);
         }
@@ -60,7 +60,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public EmployeeDTO findById(Long id) {
-        Employee employee = repository.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
+        Employee employee = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
         return mapper.toDTO(employee);
     }
 
