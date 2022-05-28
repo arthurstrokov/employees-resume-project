@@ -96,16 +96,18 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public Employee update(EmployeeDTO employeeDTO, Long id) {
-        return repository.findById(id).map(employee -> {
-            employee.setFirstName(employeeDTO.getFirstName());
-            employee.setLastName(employeeDTO.getLastName());
-            employee.setPhone(employeeDTO.getPhone());
-            employee.setEmail(employeeDTO.getEmail());
-            return repository.save(employee);
-        }).orElseGet(() -> {
-            employeeDTO.setId(id);
-            return repository.save(mapper.toEntity(employeeDTO));
-        });
+        return repository.findById(id)
+                .map(employee -> {
+                    employee.setFirstName(employeeDTO.getFirstName());
+                    employee.setLastName(employeeDTO.getLastName());
+                    employee.setPhone(employeeDTO.getPhone());
+                    employee.setEmail(employeeDTO.getEmail());
+                    return repository.save(employee);
+                })
+                .orElseGet(() -> {
+                    employeeDTO.setId(id);
+                    return repository.save(mapper.toEntity(employeeDTO));
+                });
     }
 
     /**
