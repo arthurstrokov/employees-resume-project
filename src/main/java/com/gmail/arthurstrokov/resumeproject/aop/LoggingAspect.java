@@ -44,7 +44,8 @@ public class LoggingAspect {
     public void afterThrowing(JoinPoint joinPoint, Throwable exception) {
         log.error("Exception in '{}' Method: '{}' Message: '{}'",
                 joinPoint.getSignature().getDeclaringTypeName(),
-                joinPoint.getSignature().getName(), exception.getMessage());
+                joinPoint.getSignature().getName(),
+                exception.getMessage());
     }
 
     /**
@@ -56,8 +57,9 @@ public class LoggingAspect {
     @Before("executeLogging()")
     public void beforeAdvice(JoinPoint joinPoint) {
         log = LoggerFactory.getLogger(joinPoint.getSignature().getDeclaringTypeName());
-        log.info("Before method: '{}' Args: '{}'",
-                joinPoint.getSignature(),
+        log.info("Before: '{}' Method: '{}' Args: '{}'",
+                joinPoint.getSignature().getDeclaringTypeName(),
+                joinPoint.getSignature().getName(),
                 joinPoint.getArgs());
     }
 
@@ -71,11 +73,13 @@ public class LoggingAspect {
     @AfterReturning(pointcut = "executeLogging()", returning = "result")
     public void afterReturning(JoinPoint joinPoint, Object result) {
         log = LoggerFactory.getLogger(joinPoint.getSignature().getDeclaringTypeName());
-        log.info("After method: '{}'", joinPoint.getSignature());
+        log.info("After: '{}' Method: '{}' ->",
+                joinPoint.getSignature().getDeclaringTypeName(),
+                joinPoint.getSignature().getName());
         if (result != null) {
-            log.info("return value : '{}'", result);
+            log.info("-> return value : '{}'", result);
         } else {
-            log.info("with null as return value.");
+            log.info("-> with null as return value.");
         }
     }
 }
