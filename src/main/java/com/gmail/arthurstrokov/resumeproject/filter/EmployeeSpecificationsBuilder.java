@@ -3,6 +3,7 @@ package com.gmail.arthurstrokov.resumeproject.filter;
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
  * @see SearchCriteria
  */
 @Component
+@RequestScope
 public class EmployeeSpecificationsBuilder {
     private final List<SearchCriteria> params;
 

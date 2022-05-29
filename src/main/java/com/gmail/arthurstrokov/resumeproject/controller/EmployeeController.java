@@ -97,7 +97,7 @@ public class EmployeeController {
      * @return filtered list of employees
      */
     @GetMapping("/filtered")
-    public ResponseEntity<List<EmployeeDTO>> getAllFiltered(@RequestParam(value = "filter", required = false) String filter) {
+    public ResponseEntity<List<EmployeeDTO>> getAllFiltered(@RequestParam(value = "search", required = false) String filter) {
         try {
             List<EmployeeDTO> employeeDTOList = service.getAllByFilter(filter);
             return new ResponseEntity<>(employeeDTOList, HttpStatus.OK);

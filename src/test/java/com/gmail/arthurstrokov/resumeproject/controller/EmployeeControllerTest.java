@@ -120,7 +120,7 @@ class EmployeeControllerTest {
     void employeesFiltered() throws Exception {
         when(employeeService.getAllByFilter(any(String.class))).thenReturn(employeeDTOList);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("http://localhost:8080/filtered?filter=email:arthurstrokov@gmail.com")
+                        .get("http://localhost:8080/filtered?search=email:arthurstrokov@gmail.com")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print());
         List<EmployeeDTO> employeeDTOS = employeeService.getAllByFilter("email:arthurstrokov@gmail.com");
