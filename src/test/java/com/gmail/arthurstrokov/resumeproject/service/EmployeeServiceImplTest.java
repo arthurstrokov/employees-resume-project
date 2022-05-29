@@ -2,6 +2,7 @@ package com.gmail.arthurstrokov.resumeproject.service;
 
 import com.gmail.arthurstrokov.resumeproject.dto.EmployeeDTO;
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
+import com.gmail.arthurstrokov.resumeproject.filter.EmployeeSpecificationService;
 import com.gmail.arthurstrokov.resumeproject.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,9 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 @AutoConfigureMockMvc
 class EmployeeServiceImplTest {
+
+    @Autowired
+    EmployeeSpecificationService employeeSpecificationService;
     @MockBean
     EmployeeRepository employeeRepository;
     @Autowired
@@ -103,6 +108,17 @@ class EmployeeServiceImplTest {
         when(employeeRepository.findAll(any(Pageable.class))).thenReturn(Page.empty());
         Page<EmployeeDTO> employeesPageable = employeeService.getAllPageable(pageable);
         assertNotNull(employeesPageable);
+    }
+
+    @Test
+    void getEmployeesFiltered() {
+        Specification<Employee> spec = employeeSpecificationService.getEmployeeSpecification("email:arthurstrokov@gmail.com");
+        employeeRepository.save(employee);
+        when(employeeRepository.findAll(spec)).thenReturn(employeeList);
+        List<EmployeeDTO> employeesFiltered = employeeService.getAllByFilter("email:arthurstrokov@gmail.com");
+        assertEquals(employeeDTOList, employeesFiltered);
+        verify(employeeRepository, times(1)).save(employee);
+        verify(employeeRepository, times(1)).findAll(spec);
     }
 
     @Test
