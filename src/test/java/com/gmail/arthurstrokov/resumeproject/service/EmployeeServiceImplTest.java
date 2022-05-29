@@ -91,7 +91,7 @@ class EmployeeServiceImplTest {
     void getAllEmployees() {
         employeeRepository.save(employee);
         when(employeeRepository.findAll()).thenReturn(employeeList);
-        List<EmployeeDTO> employees = employeeService.getAllEmployees();
+        List<EmployeeDTO> employees = employeeService.getAll();
         assertEquals(employees, employeeDTOList);
         verify(employeeRepository, times(1)).save(employee);
         verify(employeeRepository, times(1)).findAll();
@@ -101,7 +101,7 @@ class EmployeeServiceImplTest {
     void getEmployeesPageable() {
         Pageable pageable = PageRequest.of(0, 5, Sort.by("email"));
         when(employeeRepository.findAll(any(Pageable.class))).thenReturn(Page.empty());
-        Page<EmployeeDTO> employeesPageable = employeeService.getEmployeesPageable(pageable);
+        Page<EmployeeDTO> employeesPageable = employeeService.getAllPageable(pageable);
         assertNotNull(employeesPageable);
     }
 

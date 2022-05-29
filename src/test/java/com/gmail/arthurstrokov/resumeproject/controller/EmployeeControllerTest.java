@@ -87,19 +87,19 @@ class EmployeeControllerTest {
 
     @Test
     void getAllEmployees() throws Exception {
-        when(employeeService.getAllEmployees()).thenReturn(employeeDTOList);
+        when(employeeService.getAll()).thenReturn(employeeDTOList);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/employees")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
-        verify(employeeService).getAllEmployees();
-        verify(employeeService, times(1)).getAllEmployees();
+        verify(employeeService).getAll();
+        verify(employeeService, times(1)).getAll();
     }
 
     @Test
     void employeesPageable() throws Exception {
-        when(employeeService.getEmployeesPageable(any(Pageable.class))).thenReturn(Page.empty());
+        when(employeeService.getAllPageable(any(Pageable.class))).thenReturn(Page.empty());
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/employees?page=1&size=10")
                         .contentType(MediaType.APPLICATION_JSON))

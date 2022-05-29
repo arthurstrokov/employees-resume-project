@@ -17,9 +17,9 @@ public interface EmployeeService {
 
     EmployeeDTO findById(Long id);
 
-    List<EmployeeDTO> getAllEmployees();
+    List<EmployeeDTO> getAll();
 
-    Page<EmployeeDTO> getEmployeesPageable(Pageable pageable);
+    Page<EmployeeDTO> getAllPageable(Pageable pageable);
 
     Employee update(EmployeeDTO employee, Long id);
 

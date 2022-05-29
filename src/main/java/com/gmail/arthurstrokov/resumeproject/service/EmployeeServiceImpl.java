@@ -70,7 +70,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return employees list
      */
     @Override
-    public List<EmployeeDTO> getAllEmployees() {
+    public List<EmployeeDTO> getAll() {
         List<Employee> employees = repository.findAll();
         return employees.stream().map(mapper::toDTO).collect(Collectors.toList());
     }
@@ -82,7 +82,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return Sorted pageable list of employees
      */
     @Override
-    public Page<EmployeeDTO> getEmployeesPageable(Pageable pageable) {
+    public Page<EmployeeDTO> getAllPageable(Pageable pageable) {
         Page<Employee> employees = repository.findAll(pageable);
         return employees.map(mapper::toDTO);
     }

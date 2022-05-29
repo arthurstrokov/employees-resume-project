@@ -63,9 +63,9 @@ public class EmployeeController {
      * @return employees list
      */
     @GetMapping
-    public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
+    public ResponseEntity<List<EmployeeDTO>> getAll() {
         try {
-            List<EmployeeDTO> employeeDTOList = service.getAllEmployees();
+            List<EmployeeDTO> employeeDTOList = service.getAll();
             return new ResponseEntity<>(employeeDTOList, HttpStatus.OK);
         } catch (Exception e) {
             throw new ResourceNotFoundException(String.valueOf(e));
@@ -80,9 +80,9 @@ public class EmployeeController {
      * @return Sorted pageable list of employees
      */
     @GetMapping(value = "/pageable")
-    ResponseEntity<Page<EmployeeDTO>> employeesPageable(@PageableDefault(value = 1, page = 1) Pageable pageable) {
+    ResponseEntity<Page<EmployeeDTO>>getAllPageable(@PageableDefault(value = 1, page = 1) Pageable pageable) {
         try {
-            Page<EmployeeDTO> employeesPageable = service.getEmployeesPageable(pageable);
+            Page<EmployeeDTO> employeesPageable = service.getAllPageable(pageable);
             return new ResponseEntity<>(employeesPageable, HttpStatus.OK);
         } catch (Exception e) {
             throw new ResourceNotFoundException(String.valueOf(e));
