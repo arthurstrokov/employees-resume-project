@@ -24,6 +24,7 @@ Profile can be changed in 'application.yml' properties file.
     GET http://localhost:8080/employees
     GET http://localhost:8080/employees/{id}
     GET http://localhost:8080/employees/pageable?page=0&size=0&sort=fieldName
+    GET http://localhost:8080/employees/filtered?filter=fieldName:value
     RESPONSE: HTTP 200 (OK)
 
 ## Update

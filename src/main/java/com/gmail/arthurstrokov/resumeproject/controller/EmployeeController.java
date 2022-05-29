@@ -80,10 +80,27 @@ public class EmployeeController {
      * @return Sorted pageable list of employees
      */
     @GetMapping(value = "/pageable")
-    ResponseEntity<Page<EmployeeDTO>>getAllPageable(@PageableDefault(value = 1, page = 1) Pageable pageable) {
+    ResponseEntity<Page<EmployeeDTO>> getAllPageable(@PageableDefault(value = 1, page = 1) Pageable pageable) {
         try {
             Page<EmployeeDTO> employeesPageable = service.getAllPageable(pageable);
             return new ResponseEntity<>(employeesPageable, HttpStatus.OK);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException(String.valueOf(e));
+        }
+    }
+
+    /**
+     * Get filtered list of employees
+     * localhost:8080/employees/filtered?filter=fieldName:value
+     *
+     * @param filter filter
+     * @return filtered list of employees
+     */
+    @GetMapping("/filtered")
+    public ResponseEntity<List<EmployeeDTO>> getAllFiltered(@RequestParam(value = "filter", required = false) String filter) {
+        try {
+            List<EmployeeDTO> employeeDTOList = service.getAllByFilter(filter);
+            return new ResponseEntity<>(employeeDTOList, HttpStatus.OK);
         } catch (Exception e) {
             throw new ResourceNotFoundException(String.valueOf(e));
         }

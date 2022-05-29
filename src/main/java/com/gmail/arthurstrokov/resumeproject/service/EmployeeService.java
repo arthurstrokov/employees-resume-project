@@ -8,6 +8,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Employee service
+ *
+ * @author Arthur Strokov
+ */
 @Service
 public interface EmployeeService {
 
@@ -20,6 +25,8 @@ public interface EmployeeService {
     List<EmployeeDTO> getAll();
 
     Page<EmployeeDTO> getAllPageable(Pageable pageable);
+
+    List<EmployeeDTO> getAllByFilter(String filter);
 
     Employee update(EmployeeDTO employee, Long id);
 
