@@ -9,7 +9,8 @@ Spring Boot REST service for storing resumes.
 Service designed to work with employees resumes.
 Contains two profiles for working with (development, production), located in 'spring-boot-cloud-configuration'
 application.
-'development' use H2 database, 'production' use PostgreSQL database.
+'development' use H2 database, server.port:8081;
+'production' use PostgreSQL database, server.port: 8080
 Profile can be changed in 'application.yml' properties file.
 
 Important: when use PostgreSQL in Employee.java class field 'age' have to be annotated with @Formula(value = "date_part('year', age(birth_date))") instead of @Transient
