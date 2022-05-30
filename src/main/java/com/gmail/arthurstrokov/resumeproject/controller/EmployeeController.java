@@ -9,7 +9,6 @@ import com.gmail.arthurstrokov.resumeproject.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -80,7 +79,7 @@ public class EmployeeController {
      * @return Sorted pageable list of employees
      */
     @GetMapping(value = "/pageable")
-    ResponseEntity<Page<EmployeeDTO>> getAllPageable(@PageableDefault(value = 1, page = 1) Pageable pageable) {
+    ResponseEntity<Page<EmployeeDTO>> getAllPageable(Pageable pageable) {
         try {
             Page<EmployeeDTO> employeesPageable = service.getAllPageable(pageable);
             return new ResponseEntity<>(employeesPageable, HttpStatus.OK);
@@ -91,7 +90,7 @@ public class EmployeeController {
 
     /**
      * Get filtered list of employees
-     * localhost:8080/employees/filtered?filter=fieldName:value
+     * localhost:8080/employees/filtered?search=fieldName:value
      *
      * @param filter filter
      * @return filtered list of employees
@@ -116,8 +115,7 @@ public class EmployeeController {
      */
     @GetMapping
     ResponseEntity<Page<EmployeeDTO>> getAllFilteredAndPageable(
-            @RequestParam(value = "search", required = false) String filter,
-            @PageableDefault(value = 1, page = 1) Pageable pageable
+            @RequestParam(value = "search", required = false) String filter, Pageable pageable
     ) {
         try {
             Page<EmployeeDTO> employeesPageable = service.getAllFilteredAndPageable(filter, pageable);
