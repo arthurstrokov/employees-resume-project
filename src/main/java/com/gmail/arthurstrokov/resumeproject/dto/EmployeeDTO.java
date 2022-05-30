@@ -24,6 +24,6 @@ public class EmployeeDTO {
     private String phone;
     private Integer age;
     private Date birthDate;
-    private Gender gender;
+    private String gender;
     private String email;
 }

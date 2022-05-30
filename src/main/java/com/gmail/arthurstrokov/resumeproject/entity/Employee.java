@@ -1,11 +1,12 @@
 package com.gmail.arthurstrokov.resumeproject.entity;
 
 import lombok.*;
-import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Objects;
 
@@ -29,17 +30,19 @@ public class Employee {
     private String firstName;
     @NotBlank(message = "Last name is required. Enter last name")
     private String lastName;
+    @Pattern(regexp = "\\d{3}-\\d{9}", message = "Phone number should be like 375-291555376")
     @NotBlank(message = "Phone number is required. Enter phone number")
     private String phone;
     @Transient
-    @Formula("(TIMESTAMPDIFF(YEAR,BIRTHDATE,CURDATE()))")
     private Integer age;
     @Temporal(TemporalType.DATE)
+    @NotBlank(message = "Birth date is required. Enter birth date: 'yyyy-MM-dd' ")
     private Date birthDate;
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+    @Size(max = 1)
+    @Pattern(regexp = "^M?$|^F?$")
+    private String gender;
     @NotBlank(message = "Email is required. Enter email")
-    @Email
+    @Email(message = "Email should be like arthurstrokov@gmail.com")
     @Column(unique = true)
     private String email;
 
@@ -48,7 +51,7 @@ public class Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return Objects.equals(id, employee.id) && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName) && Objects.equals(phone, employee.phone) && Objects.equals(age, employee.age) && Objects.equals(birthDate, employee.birthDate) && gender == employee.gender && Objects.equals(email, employee.email);
+        return Objects.equals(id, employee.id) && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName) && Objects.equals(phone, employee.phone) && Objects.equals(age, employee.age) && Objects.equals(birthDate, employee.birthDate) && Objects.equals(gender, employee.gender) && Objects.equals(email, employee.email);
     }
 
     @Override
