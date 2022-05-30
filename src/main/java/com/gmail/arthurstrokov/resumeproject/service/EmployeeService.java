@@ -28,6 +28,8 @@ public interface EmployeeService {
 
     List<EmployeeDTO> getAllByFilter(String filter);
 
+    Page<EmployeeDTO> getAllFilteredAndPageable(String filter, Pageable pageable);
+
     Employee update(EmployeeDTO employee, Long id);
 
     void deleteById(Long id);

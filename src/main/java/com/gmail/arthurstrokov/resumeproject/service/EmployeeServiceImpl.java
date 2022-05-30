@@ -108,6 +108,24 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     /**
+     * Get filtered and pageable list of employees resume
+     *
+     * @param filter   filter
+     * @param pageable pageable
+     * @return Filtered and pageable list of employees
+     */
+    @Override
+    public Page<EmployeeDTO> getAllFilteredAndPageable(String filter, Pageable pageable) {
+        if (filter == null) {
+            Page<Employee> employees = repository.findAll(pageable);
+            return employees.map(mapper::toDTO);
+        } else {
+            Specification<Employee> spec = employeeSpecificationService.getEmployeeSpecification(filter);
+            return repository.findAll(spec, pageable).map(mapper::toDTO);
+        }
+    }
+
+    /**
      * Update employee
      *
      * @param employeeDTO EmployeeDTO

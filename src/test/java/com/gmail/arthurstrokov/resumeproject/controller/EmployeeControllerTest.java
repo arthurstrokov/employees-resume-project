@@ -91,10 +91,10 @@ class EmployeeControllerTest {
     }
 
     @Test
-    void getAllEmployees() throws Exception {
+    void getAll() throws Exception {
         when(employeeService.getAll()).thenReturn(employeeDTOList);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("http://localhost:8080/employees")
+                        .get("http://localhost:8080/employees/all")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
@@ -103,7 +103,7 @@ class EmployeeControllerTest {
     }
 
     @Test
-    void employeesPageable() throws Exception {
+    void getAllPageable() throws Exception {
         Pageable pageable = PageRequest.of(1, 10, Sort.by("email"));
         when(employeeService.getAllPageable(any(Pageable.class))).thenReturn(Page.empty());
         mockMvc.perform(MockMvcRequestBuilders
@@ -117,16 +117,30 @@ class EmployeeControllerTest {
     }
 
     @Test
-    void employeesFiltered() throws Exception {
+    void getAllFiltered() throws Exception {
         when(employeeService.getAllByFilter(any(String.class))).thenReturn(employeeDTOList);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("http://localhost:8080/filtered?search=email:arthurstrokov@gmail.com")
+                        .get("http://localhost:8080/employees/filtered?search=email:arthurstrokov@gmail.com")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print());
         List<EmployeeDTO> employeeDTOS = employeeService.getAllByFilter("email:arthurstrokov@gmail.com");
         assertNotNull(employeeDTOS);
         assertEquals(employeeDTOList, employeeDTOS);
-        verify(employeeService, times(1)).getAllByFilter("email:arthurstrokov@gmail.com");
+        verify(employeeService, times(2)).getAllByFilter("email:arthurstrokov@gmail.com");
+    }
+
+    @Test
+    void getAllFilteredAndPageable() throws Exception {
+        Pageable pageable = PageRequest.of(1, 10, Sort.by("email"));
+        when(employeeService.getAllFilteredAndPageable(any(String.class), any(Pageable.class))).thenReturn(Page.empty());
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("http://localhost:8080/?search=email:arthurstrokov@gmail.com&page=1&size=10&sort=email")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print());
+        Page<EmployeeDTO> employeeDTOS = employeeService.getAllFilteredAndPageable("email:arthurstrokov@gmail.com", pageable);
+        assertNotNull(employeeDTOS);
+        assertEquals(Page.empty(), employeeDTOS);
+        verify(employeeService, times(1)).getAllFilteredAndPageable("email:arthurstrokov@gmail.com", pageable);
     }
 
     @Test

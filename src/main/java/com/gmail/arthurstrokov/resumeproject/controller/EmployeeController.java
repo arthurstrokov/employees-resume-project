@@ -62,7 +62,7 @@ public class EmployeeController {
      *
      * @return employees list
      */
-    @GetMapping
+    @GetMapping(value = "/all")
     public ResponseEntity<List<EmployeeDTO>> getAll() {
         try {
             List<EmployeeDTO> employeeDTOList = service.getAll();
@@ -101,6 +101,27 @@ public class EmployeeController {
         try {
             List<EmployeeDTO> employeeDTOList = service.getAllByFilter(filter);
             return new ResponseEntity<>(employeeDTOList, HttpStatus.OK);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException(String.valueOf(e));
+        }
+    }
+
+    /**
+     * Get filtered and pageable list of employees
+     * localhost:8080/employees/?search=fieldName:value&page=0&size=0&sort=fieldName
+     *
+     * @param filter   filter
+     * @param pageable pageable
+     * @return Sorted pageable list of employees
+     */
+    @GetMapping
+    ResponseEntity<Page<EmployeeDTO>> getAllFilteredAndPageable(
+            @RequestParam(value = "search", required = false) String filter,
+            @PageableDefault(value = 1, page = 1) Pageable pageable
+    ) {
+        try {
+            Page<EmployeeDTO> employeesPageable = service.getAllFilteredAndPageable(filter, pageable);
+            return new ResponseEntity<>(employeesPageable, HttpStatus.OK);
         } catch (Exception e) {
             throw new ResourceNotFoundException(String.valueOf(e));
         }

@@ -122,6 +122,18 @@ class EmployeeServiceImplTest {
     }
 
     @Test
+    void getAllFilteredAndPageable() {
+        Specification<Employee> spec = employeeSpecificationService.getEmployeeSpecification("email:arthurstrokov@gmail.com");
+        Pageable pageable = PageRequest.of(0, 5, Sort.by("email"));
+        employeeRepository.save(employee);
+        when(employeeRepository.findAll(spec, pageable)).thenReturn(Page.empty());
+        Page<EmployeeDTO> employeesFilteredAndPageable = employeeService.getAllFilteredAndPageable("email:arthurstrokov@gmail.com", pageable);
+        assertNotNull(employeesFilteredAndPageable);
+        verify(employeeRepository, times(1)).save(employee);
+        verify(employeeRepository, times(1)).findAll(spec, pageable);
+    }
+
+    @Test
     void update() {
         when(employeeRepository.save(employee)).thenReturn(employee);
         when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
