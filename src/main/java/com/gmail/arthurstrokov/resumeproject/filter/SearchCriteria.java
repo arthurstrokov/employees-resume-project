@@ -1,6 +1,9 @@
 package com.gmail.arthurstrokov.resumeproject.filter;
 
+import com.gmail.arthurstrokov.resumeproject.entity.Gender;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Data
 public class SearchCriteria {
@@ -12,6 +15,17 @@ public class SearchCriteria {
     public SearchCriteria(String key, String operation, Object value) {
         this.key = key;
         this.operation = operation;
-        this.value = value;
+        setValue(value);
+    }
+
+    public void setValue(Object value) {
+        String presentedValue = (String) value;
+        if (presentedValue.matches("\\d{4}-\\d{2}-{2}")) {
+            this.value = LocalDate.parse(presentedValue);
+        } else if ((presentedValue).matches("^M(ALE)?$|^F(EMALE)?$")) {
+            this.value = Gender.valueOf(presentedValue);
+        } else {
+            this.value = value;
+        }
     }
 }

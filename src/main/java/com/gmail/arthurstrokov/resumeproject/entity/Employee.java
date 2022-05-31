@@ -38,9 +38,9 @@ public class Employee {
     @Temporal(TemporalType.DATE)
     @NotBlank(message = "Birth date is required. Enter birth date: 'yyyy-MM-dd' ")
     private Date birthDate;
-    @Size(max = 1)
-    @Pattern(regexp = "^M?$|^F?$")
-    private String gender;
+    @Size(max = 5)
+    @Enumerated(EnumType.STRING) //    @Pattern(regexp = "^M(ALE)?$|^F(EMALE)?$")
+    private Gender gender;
     @NotBlank(message = "Email is required. Enter email")
     @Email(message = "Email should be like arthurstrokov@gmail.com")
     @Column(unique = true)
@@ -51,7 +51,7 @@ public class Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return Objects.equals(id, employee.id) && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName) && Objects.equals(phone, employee.phone) && Objects.equals(age, employee.age) && Objects.equals(birthDate, employee.birthDate) && Objects.equals(gender, employee.gender) && Objects.equals(email, employee.email);
+        return Objects.equals(id, employee.id) && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName) && Objects.equals(phone, employee.phone) && Objects.equals(age, employee.age) && Objects.equals(birthDate, employee.birthDate) && gender == employee.gender && Objects.equals(email, employee.email);
     }
 
     @Override
