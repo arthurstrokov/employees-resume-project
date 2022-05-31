@@ -3,6 +3,7 @@ package com.gmail.arthurstrokov.resumeproject.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gmail.arthurstrokov.resumeproject.dto.EmployeeDTO;
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
+import com.gmail.arthurstrokov.resumeproject.entity.Gender;
 import com.gmail.arthurstrokov.resumeproject.service.EmployeeService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +22,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,12 +51,16 @@ class EmployeeControllerTest {
                 .firstName("Arthur")
                 .lastName("Strokov")
                 .phone("375291555376")
+                .birthDate(new Date())
+                .gender(Gender.MALE)
                 .email("arthurstrokov@gmail.com")
                 .build();
         employeeDTO = EmployeeDTO.builder()
                 .firstName("Arthur")
                 .lastName("Strokov")
                 .phone("375291555376")
+                .birthDate(new Date())
+                .gender(Gender.MALE)
                 .email("arthurstrokov@gmail.com")
                 .build();
         employeeDTOList = new ArrayList<>();

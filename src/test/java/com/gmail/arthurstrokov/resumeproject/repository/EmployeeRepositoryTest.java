@@ -1,6 +1,7 @@
 package com.gmail.arthurstrokov.resumeproject.repository;
 
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
+import com.gmail.arthurstrokov.resumeproject.entity.Gender;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ class EmployeeRepositoryTest {
                 .lastName("Strokov")
                 .phone("375291555376")
                 .birthDate(new Date())
-                .gender("M")
+                .gender(Gender.MALE)
                 .email("arthurstrokov@gmail.com")
                 .build();
     }

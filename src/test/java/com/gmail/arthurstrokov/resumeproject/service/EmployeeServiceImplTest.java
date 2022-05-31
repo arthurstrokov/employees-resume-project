@@ -2,6 +2,7 @@ package com.gmail.arthurstrokov.resumeproject.service;
 
 import com.gmail.arthurstrokov.resumeproject.dto.EmployeeDTO;
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
+import com.gmail.arthurstrokov.resumeproject.entity.Gender;
 import com.gmail.arthurstrokov.resumeproject.filter.EmployeeSpecificationService;
 import com.gmail.arthurstrokov.resumeproject.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,6 +53,8 @@ class EmployeeServiceImplTest {
                 .firstName("Arthur")
                 .lastName("Strokov")
                 .phone("375291555376")
+                .birthDate(new Date())
+                .gender(Gender.MALE)
                 .email("arthurstrokov@gmail.com")
                 .build();
         employeeDTO = EmployeeDTO.builder()
@@ -58,6 +62,8 @@ class EmployeeServiceImplTest {
                 .firstName("Arthur")
                 .lastName("Strokov")
                 .phone("375291555376")
+                .birthDate(new Date())
+                .gender(Gender.MALE)
                 .email("arthurstrokov@gmail.com")
                 .build();
         employeeList.add(employee);
