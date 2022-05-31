@@ -29,7 +29,7 @@ Important: when use PostgreSQL in Employee.java class field 'age' have to be ann
         "phone": "375-291555376",
         "age": null,
         "birthDate": "1985-11-01",
-        "gender": "M",
+        "gender": "MALE",
         "email": "arthurstrokov@gmail.com"
     }
 
@@ -57,7 +57,7 @@ Important: when use PostgreSQL in Employee.java class field 'age' have to be ann
     "phone": "375-291555376",
     "age": null,
     "birthDate": "1985-11-01",
-    "gender": "M",
+    "gender": "MALE",
     "email": "arthurstrokov@gmail.com"
     }
 
