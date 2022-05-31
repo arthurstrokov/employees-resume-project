@@ -2,6 +2,7 @@ package com.gmail.arthurstrokov.resumeproject.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -49,7 +50,7 @@ public class ExceptionHandlerAdvice {
      * @return Exception message and status code
      * @see ResourceAlreadyExistsException
      */
-    @ExceptionHandler({ResourceAlreadyExistsException.class})
+    @ExceptionHandler({ResourceAlreadyExistsException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<?> handleBadRequest(Exception exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap(ERROR_MESSAGE, exception.getMessage()));
     }
