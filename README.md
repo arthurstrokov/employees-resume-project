@@ -7,15 +7,14 @@ Spring Boot REST service for storing resumes.
 # About
 
 Service designed to work with employees resumes.
-Contains two profiles for working with (development, production), located in 'spring-boot-cloud-configuration'
-application.
+Contains two profiles for working with (development, production), located in 'https://github.com/arthurstrokov/spring-boot-cloud-configuration.git' application.
 'development' use H2 database, server.port:8081;
-'production' use PostgreSQL database, server.port: 8080
+'production' use PostgreSQL database, server.port: 8080, spring.jpa.hibernate.dll-auto: none (you need set this value to 'create' or create tables manually)
 Profile can be changed in 'application.yml' properties file.
 
 Important: when use PostgreSQL in Employee.java class field 'age' have to be annotated with @Formula(value = "date_part('year', age(birth_date))") instead of @Transient
 
-# How to
+# How to:
 
 ## Create
 
@@ -41,7 +40,7 @@ Important: when use PostgreSQL in Employee.java class field 'age' have to be ann
     GET http://localhost:8080/employees/pageable?page=0&size=0&sort=fieldName
     GET http://localhost:8080/employees/filtered?search=fieldName:value
     GET http://localhost:8080/employees/?page=0&size=0&sort=fieldValue&search=fieldName:value
-    GET http://localhost:8080/employees/?search=fieldName:value&page=0&size=0&sort=fieldValue
+    GET http://localhost:8080/employees/?search=fieldName:value&page=0&size=0&sort=fieldName
     RESPONSE: HTTP 200 (OK)
 
 ## Update
