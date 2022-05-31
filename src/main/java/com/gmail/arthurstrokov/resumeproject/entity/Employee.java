@@ -3,10 +3,7 @@ package com.gmail.arthurstrokov.resumeproject.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.Objects;
 
@@ -35,15 +32,16 @@ public class Employee {
     private String phone;
     @Transient
     private Integer age;
+    @Past
     @Temporal(TemporalType.DATE)
-    @NotBlank(message = "Birth date is required. Enter birth date: 'yyyy-MM-dd' ")
+    @NotNull(message = "Birth date is required. Enter birth date: 'yyyy-MM-dd' ")
     private Date birthDate;
-    @Size(max = 5)
-    @Enumerated(EnumType.STRING) //    @Pattern(regexp = "^M(ALE)?$|^F(EMALE)?$")
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Gender is required. Enter gender: 'MALE' or 'FEMALE' ")
     private Gender gender;
-    @NotBlank(message = "Email is required. Enter email")
-    @Email(message = "Email should be like arthurstrokov@gmail.com")
     @Column(unique = true)
+    @Email(message = "Email should be like arthurstrokov@gmail.com")
+    @NotBlank(message = "Email is required. Enter email")
     private String email;
 
     @Override

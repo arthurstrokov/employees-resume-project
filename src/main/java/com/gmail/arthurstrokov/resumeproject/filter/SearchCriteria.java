@@ -22,7 +22,7 @@ public class SearchCriteria {
         String presentedValue = (String) value;
         if (presentedValue.matches("\\d{4}-\\d{2}-{2}")) {
             this.value = LocalDate.parse(presentedValue);
-        } else if ((presentedValue).matches("^M(ALE)?$|^F(EMALE)?$")) {
+        } else if (presentedValue.matches("^M(ALE)?$|^F(EMALE)?$")) {
             this.value = Gender.valueOf(presentedValue);
         } else {
             this.value = value;
