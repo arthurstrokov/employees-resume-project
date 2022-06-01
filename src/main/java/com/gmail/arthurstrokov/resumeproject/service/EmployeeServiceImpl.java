@@ -101,7 +101,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (filter == null) {
             return repository.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
         } else {
-            Specification<Employee> spec = employeeSpecificationService.getEmployeeSpecification(filter);
+            Specification<Employee> spec = employeeSpecificationService.toSpecification(filter);
             List<Employee> employees = repository.findAll(spec);
             return employees.stream().map(mapper::toDTO).collect(Collectors.toList());
         }
@@ -120,7 +120,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             Page<Employee> employees = repository.findAll(pageable);
             return employees.map(mapper::toDTO);
         } else {
-            Specification<Employee> spec = employeeSpecificationService.getEmployeeSpecification(filter);
+            Specification<Employee> spec = employeeSpecificationService.toSpecification(filter);
             return repository.findAll(spec, pageable).map(mapper::toDTO);
         }
     }

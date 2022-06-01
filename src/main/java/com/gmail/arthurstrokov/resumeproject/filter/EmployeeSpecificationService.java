@@ -26,7 +26,7 @@ public class EmployeeSpecificationService {
      * @return Specification
      * @see Specification
      */
-    public Specification<Employee> getEmployeeSpecification(String filter) {
+    public Specification<Employee> toSpecification(String filter) {
         EmployeeSpecificationsBuilder builder = context.getBean(EmployeeSpecificationsBuilder.class);
         Pattern pattern = Pattern.compile("(\\w+?)(:)([^\\n]+),");
         Matcher matcher = pattern.matcher(filter + ",");

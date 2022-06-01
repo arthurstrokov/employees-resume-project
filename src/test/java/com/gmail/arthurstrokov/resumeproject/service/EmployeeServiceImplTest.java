@@ -118,7 +118,7 @@ class EmployeeServiceImplTest {
 
     @Test
     void getEmployeesFiltered() {
-        Specification<Employee> spec = employeeSpecificationService.getEmployeeSpecification("email:arthurstrokov@gmail.com");
+        Specification<Employee> spec = employeeSpecificationService.toSpecification("email:arthurstrokov@gmail.com");
         employeeRepository.save(employee);
         when(employeeRepository.findAll(spec)).thenReturn(employeeList);
         List<EmployeeDTO> employeesFiltered = employeeService.getAllByFilter("email:arthurstrokov@gmail.com");
@@ -129,7 +129,7 @@ class EmployeeServiceImplTest {
 
     @Test
     void getAllFilteredAndPageable() {
-        Specification<Employee> spec = employeeSpecificationService.getEmployeeSpecification("email:arthurstrokov@gmail.com");
+        Specification<Employee> spec = employeeSpecificationService.toSpecification("email:arthurstrokov@gmail.com");
         Pageable pageable = PageRequest.of(0, 5, Sort.by("email"));
         employeeRepository.save(employee);
         when(employeeRepository.findAll(spec, pageable)).thenReturn(Page.empty());

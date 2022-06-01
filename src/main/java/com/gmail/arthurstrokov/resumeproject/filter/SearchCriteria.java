@@ -6,6 +6,11 @@ import lombok.SneakyThrows;
 
 import java.text.SimpleDateFormat;
 
+/**
+ * SearchCriteria class for representation of a constraint
+ *
+ * @author Arthur Strokov
+ */
 @Data
 public class SearchCriteria {
     private String key;
