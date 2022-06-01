@@ -2,8 +2,9 @@ package com.gmail.arthurstrokov.resumeproject.filter;
 
 import com.gmail.arthurstrokov.resumeproject.entity.Gender;
 import lombok.Data;
+import lombok.SneakyThrows;
 
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
 
 @Data
 public class SearchCriteria {
@@ -18,10 +19,11 @@ public class SearchCriteria {
         setValue(value);
     }
 
+    @SneakyThrows
     public void setValue(Object value) {
         String presentedValue = (String) value;
-        if (presentedValue.matches("\\d{4}-\\d{2}-{2}")) {
-            this.value = LocalDate.parse(presentedValue);
+        if (presentedValue.matches("^\\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12]\\d|3[01])$")) {
+            this.value = new SimpleDateFormat("yyyy-MM-dd").parse(presentedValue);
         } else if (presentedValue.matches("^M(ALE)?$|^F(EMALE)?$")) {
             this.value = Gender.valueOf(presentedValue);
         } else {
