@@ -4,7 +4,6 @@ import com.gmail.arthurstrokov.resumeproject.dto.EmployeeDTO;
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
 import com.gmail.arthurstrokov.resumeproject.exceptions.ResourceAlreadyExistsException;
 import com.gmail.arthurstrokov.resumeproject.exceptions.ResourceNotFoundException;
-import com.gmail.arthurstrokov.resumeproject.filter.EmployeeSpecificationService;
 import com.gmail.arthurstrokov.resumeproject.mapper.EmployeeMapper;
 import com.gmail.arthurstrokov.resumeproject.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,7 @@ import java.util.stream.Collectors;
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository repository;
     private final EmployeeMapper mapper;
-    private final EmployeeSpecificationService employeeSpecificationService;
+    private final SpecificationService specificationService;
 
     /**
      * Check if email already exist
@@ -101,7 +100,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (filter == null) {
             return repository.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
         } else {
-            Specification<Employee> spec = employeeSpecificationService.toSpecification(filter);
+            Specification<Employee> spec = specificationService.employeeRequestToSpecification(filter);
             List<Employee> employees = repository.findAll(spec);
             return employees.stream().map(mapper::toDTO).collect(Collectors.toList());
         }
@@ -120,7 +119,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             Page<Employee> employees = repository.findAll(pageable);
             return employees.map(mapper::toDTO);
         } else {
-            Specification<Employee> spec = employeeSpecificationService.toSpecification(filter);
+            Specification<Employee> spec = specificationService.employeeRequestToSpecification(filter);
             return repository.findAll(spec, pageable).map(mapper::toDTO);
         }
     }

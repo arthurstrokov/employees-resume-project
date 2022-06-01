@@ -1,4 +1,4 @@
-package com.gmail.arthurstrokov.resumeproject.filter;
+package com.gmail.arthurstrokov.resumeproject.specification;
 
 import com.gmail.arthurstrokov.resumeproject.entity.Gender;
 import lombok.Data;

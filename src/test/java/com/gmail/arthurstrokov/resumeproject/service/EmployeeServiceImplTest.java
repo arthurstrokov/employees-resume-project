@@ -3,7 +3,6 @@ package com.gmail.arthurstrokov.resumeproject.service;
 import com.gmail.arthurstrokov.resumeproject.dto.EmployeeDTO;
 import com.gmail.arthurstrokov.resumeproject.entity.Employee;
 import com.gmail.arthurstrokov.resumeproject.entity.Gender;
-import com.gmail.arthurstrokov.resumeproject.filter.EmployeeSpecificationService;
 import com.gmail.arthurstrokov.resumeproject.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +32,7 @@ import static org.mockito.Mockito.*;
 class EmployeeServiceImplTest {
 
     @Autowired
-    EmployeeSpecificationService employeeSpecificationService;
+    SpecificationServiceImpl specificationServiceImpl;
     @MockBean
     EmployeeRepository employeeRepository;
     @Autowired
@@ -118,7 +117,7 @@ class EmployeeServiceImplTest {
 
     @Test
     void getEmployeesFiltered() {
-        Specification<Employee> spec = employeeSpecificationService.toSpecification("email:arthurstrokov@gmail.com");
+        Specification<Employee> spec = specificationServiceImpl.employeeRequestToSpecification("email:arthurstrokov@gmail.com");
         employeeRepository.save(employee);
         when(employeeRepository.findAll(spec)).thenReturn(employeeList);
         List<EmployeeDTO> employeesFiltered = employeeService.getAllByFilter("email:arthurstrokov@gmail.com");
@@ -129,7 +128,7 @@ class EmployeeServiceImplTest {
 
     @Test
     void getAllFilteredAndPageable() {
-        Specification<Employee> spec = employeeSpecificationService.toSpecification("email:arthurstrokov@gmail.com");
+        Specification<Employee> spec = specificationServiceImpl.employeeRequestToSpecification("email:arthurstrokov@gmail.com");
         Pageable pageable = PageRequest.of(0, 5, Sort.by("email"));
         employeeRepository.save(employee);
         when(employeeRepository.findAll(spec, pageable)).thenReturn(Page.empty());
