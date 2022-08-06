@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.0'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'com.bmuschko.docker-spring-boot-application' version '7.3.0'  // Docker plugin
 }
 
 java {
@@ -51,4 +52,13 @@ dependencyManagement {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+docker { // For docker plugin
+    springBootApplication {
+        baseImage = 'openjdk:11'
+        ports = [8080]
+        images = ['arthurstrokov/employees-resume-project:latest']
+        jvmArgs = ['-Dspring.profiles.active=production', '-Xmx2048m']
+    }
 }
