@@ -1,0 +1,38 @@
+{
+  "id": "employees-resume-project",
+  "cmd": null,
+  "cpus": 1.0,
+  "mem": 512.0,
+  "disk": 0,
+  "instances": 1,
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "arthurstrokov/employees-resume-project:latest"
+    },
+    "portMappings": [
+      {
+        "containerPort": 8080,
+        "hostPort": 8080
+      }
+    ]
+  },
+  "healthChecks": [
+    {
+      "protocol": "COMMAND",
+      "command": {
+        "value": "pwd"
+      },
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "ignoreHttp1xx": false
+    }
+  ]
+}
