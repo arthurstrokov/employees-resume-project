@@ -59,6 +59,6 @@ docker { // For docker plugin
         baseImage = 'openjdk:11'
         ports = [8080]
         images = ['arthurstrokov/employees-resume-project:latest']
-        jvmArgs = ['-Dspring.profiles.active=development', '-Xmx2048m']
+        jvmArgs = ['-Xmx2048m']
     }
 }
