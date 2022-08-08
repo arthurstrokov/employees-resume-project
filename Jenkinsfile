@@ -6,7 +6,6 @@ pipeline {
             bat '''
             docker version
             docker compose version
-            docker info
             curl --version
             '''
             }
