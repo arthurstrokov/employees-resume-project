@@ -5,22 +5,29 @@
   "mem": 512.0,
   "disk": 0,
   "instances": 1,
-  "networks": [
-    {
-      "mode": "container/bridge"
-    }
-  ],
+  "labels": {
+    "HAPROXY_GROUP": "external"
+  },
   "container": {
     "type": "DOCKER",
     "docker": {
-      "image": "arthurstrokov/employees-resume-project:latest"
+      "image": "arthurstrokov/employees-resume-project:latest",
+      "forcePullImage": true,
+      "network": "BRIDGE"
     },
     "portMappings": [
       {
+        "protocol": "tcp",
+        "hostPort": 8080,
         "containerPort": 8080,
-        "hostPort": 8080
+        "servicePort": 8080,
+        "name": "web-api"
       }
     ]
+  },
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 0,
+    "maximumOverCapacity": 1
   },
   "healthChecks": [
     {
@@ -33,9 +40,14 @@
       "timeoutSeconds": 20,
       "maxConsecutiveFailures": 3,
       "ignoreHttp1xx": false
+    },
+    {
+      "protocol": "TCP",
+      "portNumber": 5432,
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3
     }
-  ],
-  "labels": {
-    "HAPROXY_GROUP": "external"
-  }
+  ]
 }
