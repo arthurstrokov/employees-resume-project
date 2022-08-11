@@ -9,4 +9,4 @@ spring:
     config:
       enabled: true
       failFast: false
-      uri: http://spring-boot-cloud-configuration:8888/ # only for local using
+      uri: http://6482fcc66c545809cfc88597f4244db4c96be198b885f500af9a2c7bbc662e60:8888/ # only for local using
