@@ -9,4 +9,4 @@ spring:
     config:
       enabled: true
       failFast: false
-      uri: http://marathon-lb/spring-boot-cloud-configuration:8888/ # only for local using
+      uri: http://172.17.0.2:8888/ # only for local using
