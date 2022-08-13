@@ -22,5 +22,10 @@ pipeline {
                 }
             }
         }
+        stage('Deploy application using HTTP API'){
+            steps{
+            bat 'curl -H "Content-Type: application/json" -X POST -d @marathon.json http://localhost:8000/v2/apps'
+            }
+        }
     }
 }
