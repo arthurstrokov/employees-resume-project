@@ -6,7 +6,8 @@
   "disk": 0,
   "instances": 1,
   "labels": {
-    "HAPROXY_GROUP": "external"
+    "HAPROXY_GROUP": "external",
+    "MARATHON_SINGLE_INSTANCE_APP": "true"
   },
   "container": {
     "type": "DOCKER",
