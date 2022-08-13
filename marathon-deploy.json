@@ -1,7 +1,7 @@
 {
   "id": "employees-resume-project",
   "cmd": null,
-  "cpus": 1.0,
+  "cpus": 0.1,
   "mem": 512.0,
   "disk": 0,
   "instances": 1,
@@ -29,6 +29,16 @@
     "maximumOverCapacity": 1
   },
   "healthChecks": [
+    {
+      "protocol": "COMMAND",
+      "command": {
+        "value": "curl -f -X GET http://localhost:8080/actuator/health"
+      },
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3
+    },
     {
       "protocol": "COMMAND",
       "command": {

@@ -24,7 +24,17 @@ pipeline {
         }
         stage('Deploy application using HTTP API'){
             steps{
-            bat 'curl -H "Content-Type: application/json" -X POST -d @marathon.json http://localhost:8000/v2/apps'
+            bat 'curl -H "Content-Type: application/json" -X POST -d @marathon-deploy.json http://localhost:5000/v2/apps'
+            }
+        }
+        stage('Update application using HTTP API'){
+            steps{
+            bat 'curl -H "Content-Type: application/json" -X PUT -d @marathon-deploy.json http://localhost:5000/v2/apps/employees-resume-project'
+            }
+        }
+        stage('Restart application using HTTP API'){
+            steps{
+            bat 'curl -H "Content-Type: application/json" -X POST -d @marathon-deploy.json http://localhost:5000/v2/apps/employees-resume-project/restart'
             }
         }
     }
