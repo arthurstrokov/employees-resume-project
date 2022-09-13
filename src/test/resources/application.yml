@@ -1,10 +1,12 @@
 spring:
   main:
-    banner-mode: "off" # Set off banner
+    banner-mode: off
   datasource:
-    url: jdbc:h2:mem:test # H2
+    url: jdbc:h2:mem:test
     driverClassName: org.h2.Driver
     username: sa
     password:
   config:
     import: 'optional:configserver:'
+  jpa:
+    show-sql: true
